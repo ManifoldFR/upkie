@@ -65,6 +65,7 @@ select = [
 ]
 ignore = [
     "D401",  # good for methods but not for class docstrings
+    "D400",  # the first line not ending with a period is ok
     "D405",  # British-style section names are also "proper"!
 ]
 
