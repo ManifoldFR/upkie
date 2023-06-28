@@ -51,6 +51,11 @@ class UpkieBaseEnv(abc.ABC, gymnasium.Env):
     fall_pitch: float
     spine_config: dict
 
+    @property
+    def frequency(self) -> float:
+        """Get frequency."""
+        return self.__frequency
+
     def __init__(
         self,
         fall_pitch: float,
