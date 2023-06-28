@@ -50,6 +50,9 @@ include = [
     "upkie/utils/*.py",
 ]
 
+[tool.black]
+line-length = 79
+
 [tool.ruff]
 line-length = 79
 select = [
