@@ -34,9 +34,7 @@ from .upkie_base_env import UpkieBaseEnv
 
 
 class UpkieServosEnv(UpkieBaseEnv):
-
-    """!
-    Upkie with full observation and joint position-velocity-torque actions.
+    """!Upkie with full observation and joint position-velocity-torque actions.
 
     ### Action space
 
@@ -114,8 +112,7 @@ class UpkieServosEnv(UpkieBaseEnv):
         shm_name: str = "/vulp",
         spine_config: Optional[dict] = None,
     ):
-        """!
-        Initialize environment.
+        """!Initialize environment.
 
         @param fall_pitch Fall pitch angle, in radians.
         @param frequency Regulated frequency of the control loop, in Hz.
@@ -173,8 +170,7 @@ class UpkieServosEnv(UpkieBaseEnv):
         self.v_max = v_max
 
     def parse_first_observation(self, observation_dict: dict) -> None:
-        """!
-        Parse first observation after the spine interface is initialize.
+        """!Parse first observation after the spine interface is initialize.
 
         @param observation_dict First observation.
         """
@@ -184,8 +180,7 @@ class UpkieServosEnv(UpkieBaseEnv):
         }
 
     def vectorize_observation(self, observation_dict: dict) -> np.ndarray:
-        """!
-        Extract observation vector from a full observation dictionary.
+        """!Extract observation vector from a full observation dictionary.
 
         @param observation_dict Full observation dictionary from the spine.
         @returns Observation vector.
@@ -201,8 +196,7 @@ class UpkieServosEnv(UpkieBaseEnv):
         return obs
 
     def dictionarize_action(self, action: np.ndarray) -> dict:
-        """!
-        Convert action vector into a spine action dictionary.
+        """!Convert action vector into a spine action dictionary.
 
         @param action Action vector.
         @returns Action dictionary.
