@@ -43,4 +43,10 @@ py_binary(
     deps = ["//envs"],
 )
 
+py_binary(
+    name = "mpc_cartpole_model",
+    srcs = ["mpc_cartpole_model.py"],
+    deps = ["//envs", "//utils:python"],
+)
+
 add_lint_tests()
