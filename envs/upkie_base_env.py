@@ -28,10 +28,36 @@ import upkie.config
 from upkie.observers.base_pitch import compute_base_pitch_from_imu
 
 
-class UpkieBaseEnv(abc.ABC, gymnasium.Env):
+DEFAULT_CONFIG = {
+    "bullet": {
+        "control_mode": "torque",
+        "follower_camera": False,
+        "gui": True,
+        "position_init_base_in_world": [0.0, 0.0, 0.6],
+        "torque_control": {
+            "kp": 20.0,
+            "kd": 1.0,
+        },
+    },
+    "floor_contact": {"upper_leg_torque_threshold": 10.0},
+    "wheel_contact": {
+        "cutoff_period": 0.2,
+        "liftoff_inertia": 0.001,
+        "min_touchdown_acceleration": 2.0,
+        "min_touchdown_torque": 0.015,
+        "touchdown_inertia": 0.004,
+    },
+    "wheel_odometry": {
+        "signed_radius": {
+            "left_wheel": 0.06,
+            "right_wheel": -0.06
+        }
+    }
+}
 
-    """!
-    Base class for Upkie environments.
+
+class UpkieBaseEnv(abc.ABC, gym.Env):
+    """!Base class for Upkie environments.
 
     This class has the following attributes:
 
@@ -63,8 +89,7 @@ class UpkieBaseEnv(abc.ABC, gymnasium.Env):
         shm_name: str,
         spine_config: Optional[dict],
     ) -> None:
-        """!
-        Initialize environment.
+        """!Initialize environment.
 
         @param fall_pitch Fall pitch angle, in radians.
         @param frequency Regulated frequency of the control loop, in Hz. Set to
@@ -91,9 +116,7 @@ class UpkieBaseEnv(abc.ABC, gymnasium.Env):
         return self.__frequency
 
     def close(self) -> None:
-        """!
-        Stop the spine properly.
-        """
+        """!Stop the spine properly."""
         self._spine.stop()
 
     def reset(
@@ -213,8 +236,7 @@ class UpkieBaseEnv(abc.ABC, gymnasium.Env):
         return observation, reward, terminated, truncated, info
 
     def detect_fall(self, observation_dict: dict) -> bool:
-        """!
-        Detect a fall based on the body-to-world pitch angle.
+        """!Detect a fall based on the body-to-world pitch angle.
 
         @param observation_dict Observation dictionary with an "imu" key.
         @returns True if and only if a fall is detected.
@@ -225,16 +247,14 @@ class UpkieBaseEnv(abc.ABC, gymnasium.Env):
 
     @abc.abstractmethod
     def parse_first_observation(self, observation_dict: dict) -> None:
-        """!
-        Parse first observation after the spine interface is initialize.
+        """!Parse first observation after the spine interface is initialize.
 
         @param observation_dict First observation.
         """
 
     @abc.abstractmethod
     def vectorize_observation(self, observation_dict: dict) -> np.ndarray:
-        """!
-        Extract observation vector from a full observation dictionary.
+        """!Extract observation vector from a full observation dictionary.
 
         @param observation_dict Full observation dictionary from the spine.
         @returns Observation vector.
@@ -242,8 +262,7 @@ class UpkieBaseEnv(abc.ABC, gymnasium.Env):
 
     @abc.abstractmethod
     def dictionarize_action(self, action: np.ndarray) -> dict:
-        """!
-        Convert action vector into a spine action dictionary.
+        """!Convert action vector into a spine action dictionary.
 
         @param action Action vector.
         @returns Action dictionary.
