@@ -36,9 +36,7 @@ MAX_BASE_ANGULAR_VELOCITY: float = 1000.0  # rad/s
 
 
 class UpkieWheelsEnv(UpkieBaseEnv):
-
-    """!
-    Upkie with ground velocity actions.
+    """!Upkie with full observation but only wheel velocity actions.
 
     The environment id is ``UpkieWheelsEnv-v4``.
 
@@ -124,8 +122,7 @@ class UpkieWheelsEnv(UpkieBaseEnv):
         spine_config: Optional[dict] = None,
         wheel_radius: float = 0.06,
     ):
-        """!
-        Initialize environment.
+        """!Initialize environment.
 
         @param fall_pitch Fall pitch angle, in radians.
         @param frequency Regulated frequency of the control loop, in Hz.
@@ -180,8 +177,7 @@ class UpkieWheelsEnv(UpkieBaseEnv):
         self.wheel_radius = wheel_radius
 
     def parse_first_observation(self, observation_dict: dict) -> None:
-        """!
-        Parse first observation after the spine interface is initialize.
+        """!Parse first observation after the spine interface is initialize.
 
         @param observation_dict First observation.
         """
@@ -191,8 +187,7 @@ class UpkieWheelsEnv(UpkieBaseEnv):
         }
 
     def vectorize_observation(self, observation_dict: dict) -> np.ndarray:
-        """!
-        Extract observation vector from a full observation dictionary.
+        """!Extract observation vector from a full observation dictionary.
 
         @param observation_dict Full observation dictionary from the spine.
         @returns Observation vector.
@@ -213,8 +208,7 @@ class UpkieWheelsEnv(UpkieBaseEnv):
         return obs
 
     def dictionarize_action(self, action: np.ndarray) -> dict:
-        """!
-        Convert action vector into a spine action dictionary.
+        """!Convert action vector into a spine action dictionary.
 
         @param action Action vector.
         @returns Action dictionary.
