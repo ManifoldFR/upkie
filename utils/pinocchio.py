@@ -84,16 +84,27 @@ def box_torque_limits(model: pin.Model) -> Tuple[np.ndarray, np.ndarray]:
     return tau_max
 
 
-def create_cartpole(N) -> Tuple[pin.Model, pin.GeometryModel]:
-    """Create a cartpole Pinocchio model."""
+def create_cartpole(
+    N,
+    cart_radius=0.1,
+    cart_length=None,
+    cart_mass=1.0,
+    body_mass=0.1,
+    body_radius=0.1,
+) -> Tuple[pin.Model, pin.GeometryModel]:
+    """!Create a cartpole Pinocchio model.
+
+    Ported from the proxddp trajopt library.
+
+    @author Quentin Le Lidec
+    """
     model = pin.Model()
     geom_model = pin.GeometryModel()
 
     parent_id = 0
 
-    cart_radius = 0.1
-    cart_length = 5 * cart_radius
-    cart_mass = 1.0
+    if cart_length is None:
+        cart_length = 5 * cart_radius
     joint_name = "joint_cart"
 
     geometry_placement = pin.SE3.Identity()
@@ -123,8 +134,6 @@ def create_cartpole(N) -> Tuple[pin.Model, pin.GeometryModel]:
 
     parent_id = joint_id
     joint_placement = pin.SE3.Identity()
-    body_mass = 0.1
-    body_radius = 0.1
     for k in range(N):
         joint_name = "joint_" + str(k + 1)
         joint_id = model.addJoint(
